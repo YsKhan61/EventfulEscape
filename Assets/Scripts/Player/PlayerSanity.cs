@@ -8,6 +8,12 @@ public class PlayerSanity : MonoBehaviour
     private float maxSanity;
     private PlayerController playerController;
 
+    private void OnEnable()
+    {
+        EventService.Instance.AfterRatRush.AddListener(OnSupernaturalEvent);
+        EventService.Instance.AfterSkullShower.AddListener(OnSupernaturalEvent);
+    }
+
     private void Start()
     {
         maxSanity = sanityLevel;
@@ -21,6 +27,12 @@ public class PlayerSanity : MonoBehaviour
         float sanityDrop = updateSanity();
 
         increaseSanity(sanityDrop);
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance.AfterRatRush.RemoveListener(OnSupernaturalEvent);
+        EventService.Instance.AfterSkullShower.RemoveListener(OnSupernaturalEvent);
     }
 
     private float updateSanity()

@@ -18,6 +18,7 @@ public class SkullDropEvent : MonoBehaviour
 
     private void OnSkullDrop()
     {
+        EventService.Instance.AfterSkullShower.InvokeEvent();
         skulls.gameObject.SetActive(true);
     }
 }

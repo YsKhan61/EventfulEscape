@@ -42,6 +42,7 @@ public class RatRushEvent : MonoBehaviour
 
     private void onRatRush()
     {
+        EventService.Instance.AfterRatRush.InvokeEvent();
         rats.gameObject.SetActive(true);
         rushActive = true;
     }

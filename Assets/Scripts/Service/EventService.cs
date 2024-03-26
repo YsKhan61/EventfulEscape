@@ -20,6 +20,10 @@ public class EventService
     public EventController PlayerEscapedEvent { get; private set; }
     public EventController PlayerDeathEvent { get; private set; }
 
+    public EventController AfterRatRush { get; private set; }
+    public EventController AfterSkullShower { get; private set; }
+    public EventController<int> AfterPotionDrink { get; private set; }
+
     public EventService()
     {
         OnLightSwitchToggled = new EventController();
@@ -28,5 +32,9 @@ public class EventService
 
         PlayerEscapedEvent = new EventController();
         PlayerDeathEvent = new EventController();
+
+        AfterRatRush = new EventController();
+        AfterSkullShower = new EventController();
+        AfterPotionDrink = new EventController<int>();
     }
 }
