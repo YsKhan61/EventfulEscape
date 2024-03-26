@@ -10,3 +10,14 @@ public class EventController
 
     public void Invoke() => BaseEvent?.Invoke();
 }
+
+public class EventController<T>
+{
+    public event Action<T> BaseEvent;
+
+    public void AddListener(Action<T> action) => BaseEvent += action;
+
+    public void RemoveListener(Action<T> action) => BaseEvent -= action;
+
+    public void Invoke(T value) => BaseEvent?.Invoke(value);
+}
