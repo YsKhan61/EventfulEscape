@@ -25,10 +25,13 @@ public class EventService
     public EventController<int> AfterPotionDrink { get; private set; }
     public EventController AfterDollAppear { get; private set; }
 
+    public EventController OnScaryImageSeen { get; private set; }
+
     public EventService()
     {
         OnLightSwitchToggled = new EventController();
         OnKeyPickedUp = new EventController<int>();
+
         OnLightsOffByGhostEvent = new EventController();
 
         PlayerEscapedEvent = new EventController();
@@ -38,5 +41,6 @@ public class EventService
         AfterSkullShower = new EventController();
         AfterPotionDrink = new EventController<int>();
         AfterDollAppear = new EventController();
+        OnScaryImageSeen = new EventController();
     }
 }
