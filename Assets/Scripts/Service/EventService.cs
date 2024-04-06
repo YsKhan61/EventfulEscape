@@ -23,6 +23,7 @@ public class EventService
     public EventController AfterRatRush { get; private set; }
     public EventController AfterSkullShower { get; private set; }
     public EventController<int> AfterPotionDrink { get; private set; }
+    public EventController AfterDollAppear { get; private set; }
 
     public EventService()
     {
@@ -36,5 +37,6 @@ public class EventService
         AfterRatRush = new EventController();
         AfterSkullShower = new EventController();
         AfterPotionDrink = new EventController<int>();
+        AfterDollAppear = new EventController();
     }
 }
