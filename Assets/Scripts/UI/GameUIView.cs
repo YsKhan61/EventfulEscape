@@ -19,7 +19,7 @@ public class GameUIView : MonoBehaviour
     [SerializeField] Button tryAgainButton;
     [SerializeField] Button quitButton;
 
-    [SerializeField] int totalKeys = 4;
+    [SerializeField] private IntDataSO totalKeys;
 
     private void OnEnable()
     {
@@ -47,7 +47,7 @@ public class GameUIView : MonoBehaviour
     }
 
     public void UpdateInsanity(float playerSanity) => insanityImage.rectTransform.localScale = new Vector3(1, playerSanity, 1);
-    private void OnKeyEquipped(int keys) => keysFoundText.SetText($"Keys Found: {keys}/"+totalKeys);
+    private void OnKeyEquipped(int keys) => keysFoundText.SetText($"Keys Found: {keys}/"+totalKeys.Value);
     private void OnQuitButtonClicked() => Application.Quit();
     private void OnTryAgainButtonClicked() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
