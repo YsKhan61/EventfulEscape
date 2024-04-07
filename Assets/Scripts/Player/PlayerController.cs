@@ -9,6 +9,8 @@ public class PlayerController
     private float mouseX;
     private PlayerState playerState;
 
+    public PlayerSanity playerSanity;
+
     public bool IsInteracted;
     public int KeysEquipped { get => playerScriptableObject.KeysEquipped; set => playerScriptableObject.KeysEquipped = value; }
     public PlayerState PlayerState { get => playerState; private set => playerState = value; }

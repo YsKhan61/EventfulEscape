@@ -4367,6 +4367,8 @@ MonoBehaviour:
   allKeysCollectedMessage: {fileID: 11400000, guid: 44697da0df36d46478a35e925a3c5bab, type: 2}
   totalPotions: {fileID: 11400000, guid: 7cc47b794f30cae4cbbe5198c724e922, type: 2}
   allPotionsCollectedMessage: {fileID: 11400000, guid: da925d8b71c715b4181fb384747296da, type: 2}
+  minSanityLevel: 0.583
+  playerTormentedMessage: {fileID: 11400000, guid: e470df1fbf8f0b64cb3fe838250fafdd, type: 2}
 --- !u!1 &760363706
 GameObject:
   m_ObjectHideFlags: 0

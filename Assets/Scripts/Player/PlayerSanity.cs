@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerSanity : MonoBehaviour
 {
     [SerializeField] private float sanityLevel = 100.0f;
+    public float SanityLevel => sanityLevel;
     [SerializeField] private float sanityDropRate = 0.2f;
     [SerializeField] private float sanityDropAmountPerEvent = 10f;
     private float maxSanity;
@@ -21,6 +22,7 @@ public class PlayerSanity : MonoBehaviour
     {
         maxSanity = sanityLevel;
         playerController = GameService.Instance.GetPlayerController();
+        playerController.playerSanity = this;
     }
     void Update()
     {
