@@ -13,12 +13,15 @@ public class PlayerController
     public int KeysEquipped { get => playerScriptableObject.KeysEquipped; set => playerScriptableObject.KeysEquipped = value; }
     public PlayerState PlayerState { get => playerState; private set => playerState = value; }
 
+    public int PotionsEquipped {get => playerScriptableObject.PotionsEquipped; set => playerScriptableObject.PotionsEquipped = value;}
+
     public PlayerController(PlayerView playerView, PlayerScriptableObject playerScriptableObject)
     {
         this.playerView = playerView;
         this.playerView.SetController(this);
         this.playerScriptableObject = playerScriptableObject;
         this.playerScriptableObject.KeysEquipped = 0;
+        this.playerScriptableObject.PotionsEquipped = 0;
         playerState = PlayerState.InDark;
 
         EventService.Instance.OnLightsOffByGhostEvent.AddListener(onLightsOffByGhost);
