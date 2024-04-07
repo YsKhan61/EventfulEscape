@@ -34,6 +34,24 @@ public class AchivementService : MonoBehaviour
     [SerializeField]
     private StringDataSO playerTormentedMessage;
 
+    [Space(10)]
+
+    [Header("Achivement of player spent lot of time in dark")]
+
+    [SerializeField, Tooltip("Minimum seconds to spend in darkness")]
+    private int secondsInDark;
+
+    [SerializeField]
+    private StringDataSO playerInDarkMessage;
+
+    private PlayerSanity playerSanity;
+
+    private bool playerSpentLotOfTimeInDarkAchivementInvoked = false;
+
+    private void Awake()
+    {
+        uiView.HideAchivement(0);
+    }
 
 
     private void OnEnable()
@@ -43,9 +61,16 @@ public class AchivementService : MonoBehaviour
         EventService.Instance.PlayerEscapedEvent.AddListener(OnPlayerEscaped);
     }
 
-    private void Awake()
+    private void Start()
     {
-        uiView.HideAchivement(0);
+        playerSanity = GameService.Instance.GetPlayerController().playerSanity;
+    }
+
+    private void Update()
+    {
+
+        TryInvokePlayerInDarkAchivement();
+        
     }
 
     private void OnDisable()
@@ -55,14 +80,21 @@ public class AchivementService : MonoBehaviour
         EventService.Instance.PlayerEscapedEvent.RemoveListener(OnPlayerEscaped);
     }
 
+    private void TryInvokePlayerInDarkAchivement()
+    {
+        if (playerSanity.TimeSpentInDark >= secondsInDark && !playerSpentLotOfTimeInDarkAchivementInvoked)
+        {
+            InvokeAchivement(playerInDarkMessage.Value);
+            playerSpentLotOfTimeInDarkAchivementInvoked = true;
+        }
+    }
+
     private void OnPotionDrink(int _)
     {
         int potionsEquipped = GameService.Instance.GetPlayerController().PotionsEquipped;
         if (potionsEquipped == totalPotions.Value)
         {
-            uiView.ShowAchivement(allPotionsCollectedMessage.Value);
-            GameService.Instance.GetSoundView().PlaySoundEffects(SoundType.AchivementUnlock);
-            uiView.HideAchivement(3);
+            InvokeAchivement(allPotionsCollectedMessage.Value);
         }
     }
 
@@ -70,21 +102,23 @@ public class AchivementService : MonoBehaviour
     {
         if (currentKeys == totalKeys.Value)
         {
-            uiView.ShowAchivement(allKeysCollectedMessage.Value);
-            GameService.Instance.GetSoundView().PlaySoundEffects(SoundType.AchivementUnlock); 
-            uiView.HideAchivement(3);
+            InvokeAchivement(allKeysCollectedMessage.Value);
         }
     }
 
     private void OnPlayerEscaped()
     {
-        float sanityLevel = GameService.Instance.GetPlayerController().playerSanity.SanityLevel;
-        if (sanityLevel >= minSanityLevel)
+        if (playerSanity.SanityLevel >= minSanityLevel)
         {
-            uiView.ShowAchivement(playerTormentedMessage.Value);
-            GameService.Instance.GetSoundView().PlaySoundEffects(SoundType.AchivementUnlock);
-            uiView.HideAchivement(3);
+            InvokeAchivement(playerTormentedMessage.Value);
         }
+    }
+
+    private void InvokeAchivement(string message)
+    {
+        uiView.ShowAchivement(message);
+        GameService.Instance.GetSoundView().PlaySoundEffects(SoundType.AchivementUnlock);
+        uiView.HideAchivement(3);
     }
 
 }

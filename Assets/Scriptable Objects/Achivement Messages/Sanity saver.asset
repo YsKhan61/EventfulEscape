@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc7f39e54ec04444ae4bac0143bb30d, type: 3}
   m_Name: Sanity saver
   m_EditorClassIdentifier: 
-  value: "SANITY SAVER \nAll potions collected"
+  value: SANITY SAVER

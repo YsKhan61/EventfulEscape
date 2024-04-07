@@ -9,6 +9,9 @@ public class PlayerSanity : MonoBehaviour
     private float maxSanity;
     private PlayerController playerController;
 
+    private float timeSpentInDark = 0f;
+    public float TimeSpentInDark => timeSpentInDark;
+
     private void OnEnable()
     {
         EventService.Instance.AfterRatRush.AddListener(OnSupernaturalEvent);
@@ -32,6 +35,8 @@ public class PlayerSanity : MonoBehaviour
         float sanityDrop = updateSanity();
 
         increaseSanity(sanityDrop);
+
+        updateTimeSpentInDark();
     }
 
     private void OnDisable()
@@ -81,5 +86,13 @@ public class PlayerSanity : MonoBehaviour
     private void OnDrankPotion(int potionEffect)
     {
         decreaseSanity(potionEffect);
+    }
+
+    private void updateTimeSpentInDark()
+    {
+        if (playerController.PlayerState == PlayerState.InDark)
+        {
+            timeSpentInDark += Time.deltaTime;
+        }
     }
 }

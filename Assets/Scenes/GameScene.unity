@@ -4369,6 +4369,8 @@ MonoBehaviour:
   allPotionsCollectedMessage: {fileID: 11400000, guid: da925d8b71c715b4181fb384747296da, type: 2}
   minSanityLevel: 0.583
   playerTormentedMessage: {fileID: 11400000, guid: e470df1fbf8f0b64cb3fe838250fafdd, type: 2}
+  secondsInDark: 120
+  playerInDarkMessage: {fileID: 11400000, guid: 8e688b2660b3a5f4696f688336a9adeb, type: 2}
 --- !u!1 &760363706
 GameObject:
   m_ObjectHideFlags: 0
