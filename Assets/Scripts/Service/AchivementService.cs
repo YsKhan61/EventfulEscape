@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AchivementService : MonoBehaviour
@@ -61,16 +62,13 @@ public class AchivementService : MonoBehaviour
         EventService.Instance.PlayerEscapedEvent.AddListener(OnPlayerEscaped);
     }
 
-    private void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForEndOfFrame();
+
         playerSanity = GameService.Instance.GetPlayerController().playerSanity;
-    }
 
-    private void Update()
-    {
-
-        TryInvokePlayerInDarkAchivement();
-        
+        InvokeRepeating(nameof(TryInvokePlayerInDarkAchivement), 0, 0.5f);
     }
 
     private void OnDisable()
