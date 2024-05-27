@@ -6,10 +6,11 @@ public class PlayerEscapedEvent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerView>() != null)
+        if (other.TryGetComponent(out PlayerView view))
         {
             GameService.Instance.GetSoundView().PlaySoundEffects(soundToPlay);
             EventService.Instance.PlayerEscapedEvent.InvokeEvent();
+            GetComponent<Collider>().enabled = false;
         }
     }
 }

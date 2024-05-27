@@ -19,15 +19,17 @@ public class GameUIView : MonoBehaviour
     [SerializeField] Button tryAgainButton;
     [SerializeField] Button quitButton;
 
+    [SerializeField] private IntDataSO totalKeys;
+
     private void OnEnable()
     {
-        EventService.Instance.KeyPickedUpEvent.AddListener(OnKeyEquipped);
-        EventService.Instance.LightsOffByGhostEvent.AddListener(SetRedVignette);
+        EventService.Instance.OnKeyPickedUp.AddListener(OnKeyEquipped);
+        EventService.Instance.OnLightsOffByGhostEvent.AddListener(SetRedVignette);
         EventService.Instance.PlayerEscapedEvent.AddListener(OnPlayerEscaped);
         EventService.Instance.PlayerDeathEvent.AddListener(SetRedVignette);
         EventService.Instance.PlayerDeathEvent.AddListener(OnPlayerDeath);
-        EventService.Instance.RatRushEvent.AddListener(SetRedVignette);
-        EventService.Instance.SkullDropEvent.AddListener(SetRedVignette);
+        EventService.Instance.AfterRatRush.AddListener(SetRedVignette);
+        EventService.Instance.AfterSkullShower.AddListener(SetRedVignette);
 
         tryAgainButton.onClick.AddListener(OnTryAgainButtonClicked);
         quitButton.onClick.AddListener(OnQuitButtonClicked);
@@ -35,17 +37,17 @@ public class GameUIView : MonoBehaviour
 
     private void OnDisable()
     {
-        EventService.Instance.KeyPickedUpEvent.RemoveListener(OnKeyEquipped);
-        EventService.Instance.LightsOffByGhostEvent.RemoveListener(SetRedVignette);
+        EventService.Instance.OnKeyPickedUp.RemoveListener(OnKeyEquipped);
+        EventService.Instance.OnLightsOffByGhostEvent.RemoveListener(SetRedVignette);
         EventService.Instance.PlayerEscapedEvent.RemoveListener(OnPlayerEscaped);
         EventService.Instance.PlayerDeathEvent.RemoveListener(SetRedVignette);
         EventService.Instance.PlayerDeathEvent.RemoveListener(OnPlayerDeath);
-        EventService.Instance.RatRushEvent.RemoveListener(SetRedVignette);
-        EventService.Instance.SkullDropEvent.RemoveListener(SetRedVignette);
+        EventService.Instance.AfterRatRush.RemoveListener(SetRedVignette);
+        EventService.Instance.AfterSkullShower.RemoveListener(SetRedVignette);
     }
 
     public void UpdateInsanity(float playerSanity) => insanityImage.rectTransform.localScale = new Vector3(1, playerSanity, 1);
-    private void OnKeyEquipped(int keys) => keysFoundText.SetText($"Keys Found: {keys}/3");
+    private void OnKeyEquipped(int keys) => keysFoundText.SetText($"Keys Found: {keys}/"+totalKeys.Value);
     private void OnQuitButtonClicked() => Application.Quit();
     private void OnTryAgainButtonClicked() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 

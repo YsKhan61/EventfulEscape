@@ -3,31 +3,30 @@ using UnityEngine;
 public class PlayerSanity : MonoBehaviour
 {
     [SerializeField] private float sanityLevel = 100.0f;
+    public float SanityLevel => sanityLevel;
     [SerializeField] private float sanityDropRate = 0.2f;
     [SerializeField] private float sanityDropAmountPerEvent = 10f;
     private float maxSanity;
     private PlayerController playerController;
 
+    private float timeSpentInDark = 0f;
+    public float TimeSpentInDark => timeSpentInDark;
+
+    private void OnEnable()
+    {
+        EventService.Instance.AfterRatRush.AddListener(OnSupernaturalEvent);
+        EventService.Instance.AfterSkullShower.AddListener(OnSupernaturalEvent);
+        EventService.Instance.AfterPotionDrink.AddListener(OnDrankPotion);
+        EventService.Instance.AfterDollAppear.AddListener(OnSupernaturalEvent);
+        EventService.Instance.OnScaryImageSeen.AddListener(OnSupernaturalEvent);
+    }
+
     private void Start()
     {
         maxSanity = sanityLevel;
         playerController = GameService.Instance.GetPlayerController();
+        playerController.playerSanity = this;
     }
-
-    private void OnEnable()
-    {
-        EventService.Instance.PotionDrinkEvent.AddListener(OnDrankPotion);
-        EventService.Instance.RatRushEvent.AddListener(OnSupernaturalEvent);
-        EventService.Instance.SkullDropEvent.AddListener(OnSupernaturalEvent);
-    }
-
-    private void OnDisable()
-    {
-        EventService.Instance.PotionDrinkEvent.RemoveListener(OnDrankPotion);
-        EventService.Instance.RatRushEvent.RemoveListener(OnSupernaturalEvent);
-        EventService.Instance.SkullDropEvent.RemoveListener(OnSupernaturalEvent);
-    }
-
     void Update()
     {
         if (playerController.PlayerState == PlayerState.Dead)
@@ -35,7 +34,18 @@ public class PlayerSanity : MonoBehaviour
 
         float sanityDrop = updateSanity();
 
-        decreaseSanity(sanityDrop);
+        increaseSanity(sanityDrop);
+
+        updateTimeSpentInDark();
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance.AfterRatRush.RemoveListener(OnSupernaturalEvent);
+        EventService.Instance.AfterSkullShower.RemoveListener(OnSupernaturalEvent);
+        EventService.Instance.AfterPotionDrink.RemoveListener(OnDrankPotion);
+        EventService.Instance.AfterDollAppear.RemoveListener(OnSupernaturalEvent);
+        EventService.Instance.OnScaryImageSeen.RemoveListener(OnSupernaturalEvent);
     }
 
     private float updateSanity()
@@ -48,7 +58,7 @@ public class PlayerSanity : MonoBehaviour
         return sanityDrop;
     }
 
-    private void decreaseSanity(float amountToDecrease)
+    private void increaseSanity(float amountToDecrease)
     {
         Mathf.Floor(sanityLevel -= amountToDecrease);
         if (sanityLevel <= 0)
@@ -59,7 +69,7 @@ public class PlayerSanity : MonoBehaviour
         GameService.Instance.GetGameUI().UpdateInsanity(1f - sanityLevel / maxSanity);
     }
 
-    private void IncreaseSanity(float amountToIncrease)
+    private void decreaseSanity(float amountToIncrease)
     {
         Mathf.Floor(sanityLevel += amountToIncrease);
         if (sanityLevel > 100)
@@ -70,11 +80,19 @@ public class PlayerSanity : MonoBehaviour
     }
     private void OnSupernaturalEvent()
     {
-        decreaseSanity(sanityDropAmountPerEvent);
+        increaseSanity(sanityDropAmountPerEvent);
     }
 
     private void OnDrankPotion(int potionEffect)
     {
-        IncreaseSanity(potionEffect);
+        decreaseSanity(potionEffect);
+    }
+
+    private void updateTimeSpentInDark()
+    {
+        if (playerController.PlayerState == PlayerState.InDark)
+        {
+            timeSpentInDark += Time.deltaTime;
+        }
     }
 }

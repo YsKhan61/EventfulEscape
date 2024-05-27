@@ -8,13 +8,11 @@ public class RatRushEvent : MonoBehaviour
 
     private float speed = 7.5f;
     private bool rushActive = false;
-    private bool reachedTarget = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<PlayerView>() != null)
         {
-            EventService.Instance.RatRushEvent.InvokeEvent();
             onRatRush();
             GameService.Instance.GetSoundView().PlaySoundEffects(soundToPlay);
             GetComponent<Collider>().enabled = false;
@@ -23,28 +21,28 @@ public class RatRushEvent : MonoBehaviour
 
     void Update()
     {
-        //Todo - Morning
         if (rushActive)
         {
-            if (!reachedTarget)
-            {
-                rats.position = Vector3.MoveTowards(rats.position, target.position, speed * Time.deltaTime);
+            ratMovement();
+        }
+    }
 
-                if (rats.position == target.position)
-                {
-                    reachedTarget = true;
-                }
-            }
-            else
-            {
-                rushActive = false;
-                rats.gameObject.SetActive(false);
-            }
+    private void ratMovement()
+    {
+        if (rats.position != target.position)
+        {
+            rats.position = Vector3.MoveTowards(rats.position, target.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            rushActive = false;
+            rats.gameObject.SetActive(false);
         }
     }
 
     private void onRatRush()
     {
+        EventService.Instance.AfterRatRush.InvokeEvent();
         rats.gameObject.SetActive(true);
         rushActive = true;
     }
